@@ -1,0 +1,1 @@
+This repo is for use of the Holberton School in Machine Learning specialization. It will have the maths implied in this specialization.
