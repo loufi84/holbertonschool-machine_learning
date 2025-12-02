@@ -8,7 +8,7 @@ a specific axis.
 
 def np_cat(mat1, mat2, axis=0):
     """
-    The function that concatenates two matrices.
+    The function that concatenates two matrices along an axis.
     """
     new_matrix = np.concatenate((mat1, mat2), axis)
     return new_matrix
