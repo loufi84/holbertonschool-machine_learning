@@ -6,6 +6,7 @@ scaled.
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 def change_scale():
     """
     The function that draw the line graph logarithmically scaled.
