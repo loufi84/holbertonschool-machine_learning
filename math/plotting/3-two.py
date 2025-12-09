@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """
-This module contains a function that 
+This module contains a function that draw 2 differents lines on a graph.
 """
 import numpy as np
 import matplotlib.pyplot as plt
 
 
 def two():
-
+    """
+    The function that draw the lines.
+    """
     x = np.arange(0, 21000, 1000)
     r = np.log(0.5)
     t1 = 5730
@@ -16,13 +18,15 @@ def two():
     y2 = np.exp((r / t2) * x)
     plt.figure(figsize=(6.4, 4.8))
 
-    # your code here
+    plt.plot(x, y1, label="C-14", color="red", linestyle="--")
+    plt.plot(x, y2, label="Ra-226", color="green", linestyle="-")
+
     plt.xlabel("Time (years)")
-    plt.ylabel("Fraction remaining")
+    plt.ylabel("Fraction Remaining")
     plt.title("Exponential Decay of Radioactive Elements")
+
     plt.xlim(0, 20000)
     plt.ylim(0, 1)
-    plt.plot(x, y1, 'r--', label="C-14")
-    plt.plot(x, y2, 'g-', label="Ra-226")
+
     plt.legend()
     plt.show()
