@@ -1,10 +1,17 @@
 #!/usr/bin/env python3
+"""
+This module contains a function that draw a stacked bar graph.
+"""
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 def bars():
+    """
+    The said function.
+    """
     np.random.seed(5)
-    fruit = np.random.randint(0, 20, (4,3))
+    fruit = np.random.randint(0, 20, (4, 3))
     plt.figure(figsize=(6.4, 4.8))
 
     # your code here
@@ -16,10 +23,14 @@ def bars():
 
     x = np.arange(len(people))
 
-    plt.bar(x, apples, width=0.5, color="red", label="apples")
-    plt.bar(x, bananas, width=0.5, bottom=apples, color="yellow", label="bananas")
-    plt.bar(x, oranges, width=0.5, bottom=apples+bananas, color="#ff8000", label="oranges")
-    plt.bar(x, peaches, width=0.5, bottom=apples+bananas+oranges, color="#ffe5b4", label="peaches")
+    plt.bar(x, apples, width=0.5, color="red",
+            label="apples")
+    plt.bar(x, bananas, width=0.5, bottom=apples, color="yellow",
+            label="bananas")
+    plt.bar(x, oranges, width=0.5, bottom=apples+bananas, color="#ff8000",
+            label="oranges")
+    plt.bar(x, peaches, width=0.5, bottom=apples+bananas+oranges,
+            color="#ffe5b4", label="peaches")
 
     plt.ylabel("Quantity of Fruit")
     plt.title("Number of Fruit per Person")
