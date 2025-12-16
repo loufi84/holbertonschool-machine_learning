@@ -127,17 +127,12 @@ class Node:
             f = self.feature
             t = self.threshold
 
-            if f not in child.lower:
-                child.lower[f] = -np.inf
-            if f not in child.upper:
-                child.upper[f] = np.inf
-
             if child is self.left_child:
-                child.lower[f] = min(child.upper[f], t)
+                child.lower[f] = max(child.lower.get(f, -np.inf), t)
             else:
-                child.upper[f] = max(child.lower[f], t)
+                child.upper[f] = min(child.upper.get(f, np.inf), t)
 
-        for child in [self.left_child, self.right_child] :
+        for child in [self.left_child, self.right_child]:
             if child is not None:
                 child.update_bounds_below()
 
