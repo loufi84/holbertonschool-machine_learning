@@ -113,11 +113,11 @@ class Node:
         """
         This function update the bounds of the tree.
         """
-        if self.is_root : 
-            self.upper = { 0:np.inf }
-            self.lower = {0 : -1*np.inf }
+        if self.is_root:
+            self.upper = {0: np.inf}
+            self.lower = {0: -1*np.inf}
 
-        for child in [self.left_child, self.right_child] :
+        for child in [self.left_child, self.right_child]:
             if child is None:
                 continue
 
