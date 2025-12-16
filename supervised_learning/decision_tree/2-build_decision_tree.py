@@ -58,20 +58,20 @@ class Node:
         Function to add prefix to left child.
         """
         lines = text.split("\n")
-        new_text = "    +--" + lines[0] + "\n"
+        new_lines = ["    +--" + lines[0]]
         for x in lines[1:]:
-            new_text += ("    |  " + x) + "\n"
-        return (new_text)
+            new_lines.append("    |  " + x)
+        return "\n".join(new_lines)
 
     def right_child_add_prefix(self, text):
         """
         Function to add prefix to right child.
         """
         lines = text.split("\n")
-        new_text = "    +--" + lines[0] + "\n"
+        new_lines = ["    +--" + lines[0]]
         for x in lines[1:]:
-            new_text += ("       " + x) + "\n"
-        return new_text
+            new_lines.append("       " + x)
+        return "\n".join(new_lines)
 
     def __str__(self):
         """
@@ -82,15 +82,15 @@ class Node:
         else:
             text = f"-> node [feature={self.feature}, threshold={self.threshold}]"
 
+        parts = [text]
+
         if self.left_child is not None:
-            left_str = self.left_child.__str__()
-            text += "\n" + self.left_child_add_prefix(left_str)
+            parts.append(self.left_child_add_prefix(str(self.left_child)))
 
         if self.right_child is not None:
-            right_str = self.right_child.__str__()
-            text += self.right_child_add_prefix(right_str)
+            parts.append(self.right_child_add_prefix(str(self.right_child)))
 
-        return text.rstrip("\n")
+        return "\n".join(parts)
 
 
 class Leaf(Node):
