@@ -77,7 +77,10 @@ class Node:
         """
         This method represent the object node.
         """
-        text = f"-> node [feature={self.feature}, threshold={self.threshold}]"
+        if self.is_root:
+            text = f"root [feature={self.feature}, threshold={self.threshold}]"
+        else:
+            text = f"-> node [feature={self.feature}, threshold={self.threshold}]"
 
         if self.left_child is not None:
             left_str = self.left_child.__str__()
