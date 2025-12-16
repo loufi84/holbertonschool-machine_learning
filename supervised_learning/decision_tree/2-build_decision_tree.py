@@ -156,4 +156,4 @@ class Decision_Tree():
         """
         This method represent the object in string.
         """
-        return self.root.__str__()
+        return self.root.__str__() + "\n"
