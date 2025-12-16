@@ -80,8 +80,10 @@ class Node:
         if self.is_root:
             text = f"root [feature={self.feature}, threshold={self.threshold}]"
         else:
-            text = f"-> node [feature={self.feature}, threshold={
-                self.threshold}]"
+            text = (
+                f"-> node [feature={self.feature}, "
+                f"threshold={self.threshold}]"
+            )
 
         parts = [text]
 
