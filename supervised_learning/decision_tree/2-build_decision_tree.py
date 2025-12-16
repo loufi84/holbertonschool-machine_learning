@@ -84,7 +84,7 @@ class Node:
             text += "\n" + self.left_child_add_prefix(left_str)
 
         if self.right_child is not None:
-            right_str = self.right_child_add_prefix(right_str)
+            right_str = self.__str__()
             text += self.right_child_add_prefix(right_str)
 
         return text.rstrip("\n")
