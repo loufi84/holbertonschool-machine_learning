@@ -22,6 +22,9 @@ class Node:
         self.depth = depth
 
     def max_depth_below(self):
+        """
+        This function calculate the maximal depth of the tree
+        """
         if self.left_child is None and self.right_child is None:
             return self.depth
 
