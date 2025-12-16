@@ -24,8 +24,6 @@ class Node:
     def max_depth_below(self):
         """
         This function calculate the maximal depth of the tree by recursion.
-        First check if the node is a leaf, then check if there is
-        a left or right child and browse the tree.
         """
         if self.left_child is None and self.right_child is None:
             return self.depth
@@ -54,6 +52,9 @@ class Leaf(Node):
         self.depth = depth
 
     def max_depth_below(self):
+        """
+        Return the length of the leaf.
+        """
         return self.depth
 
 
@@ -76,4 +77,7 @@ class Decision_Tree():
         self.predict = None
 
     def depth(self):
+        """
+        Return the depth of the decision tree.
+        """
         return self.root.max_depth_below()
