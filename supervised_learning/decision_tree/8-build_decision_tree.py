@@ -458,3 +458,10 @@ class Decision_Tree():
                       for i in range(self.explanatory.shape[1])])
         i = np.argmin(X[:, 1])
         return i, X[i, 0]
+
+    def possible_thresholds(self, node, feature):
+        """
+        Helper function for possible thresholds.
+        """
+        values = np.unique((self.explanatory[:, feature])[node.sub_population])
+        return (values[1:] + values[:-1]) / 2
