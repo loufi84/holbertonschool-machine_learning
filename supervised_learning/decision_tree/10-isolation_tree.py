@@ -361,7 +361,7 @@ class Isolation_Random_Tree():
 
     def np_extrema(self, arr):
         """
-        Extrema computes with numpy.
+        Extrema computes with
         """
         return np.min(arr), np.max(arr)
 
@@ -369,19 +369,26 @@ class Isolation_Random_Tree():
         """
         Random splitting rule, safe against empty / constant sub-populations.
         """
-        diff = 0
-        while diff == 0:
+        idx = np.where(node.sub_population)[0]
+        m = idx.size
+
+        if m <= 1:
             feature = self.rng.integers(0, self.explanatory.shape[1])
-            vals = self.explanatory[:, feature][node.sub_population]
+            threshold = self.explanatory[idx[0], feature] if m == 1 else 0.0
+            return feature, threshold
 
-            if vals.size == 0:
-                return 0, 0.0
+        Xn = self.explanatory[idx]
+        mins = Xn.min(axis=0)
+        maxs = Xn.max(axis=0)
+        diffs = maxs - mins
 
-        feature_min, feature_max = self.np_extrema(vals)
-        diff = feature_max - feature_min
+        valid = np.where(diffs > 0)[0]
 
+        if valid.size == 0:
+            feature = self.rng.integers(0, Xn.shape[1])
+            threshold = mins[feature]
         x = self.rng.uniform()
-        threshold = (1 - x) * feature_min + x * feature_max
+        threshold = (1 - x) * mins[feature] + x * maxs[feature]
         return feature, threshold
 
     def get_leaf_child(self, node, sub_population):
