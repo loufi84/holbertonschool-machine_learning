@@ -2,6 +2,7 @@
 """
 This module defines the Isolation_Random_Forest class.
 """
+
 import numpy as np
 Isolation_Random_Tree = __import__('10-isolation_tree').Isolation_Random_Tree
 
@@ -12,6 +13,9 @@ class Isolation_Random_Forest:
     """
 
     def __init__(self, n_trees=100, max_depth=10, min_pop=1, seed=0):
+        """
+        Initialize the forest.
+        """
         self.numpy_predicts = []
         self.target = None
         self.numpy_preds = None
@@ -21,14 +25,14 @@ class Isolation_Random_Forest:
 
     def predict(self, explanatory):
         """
-        Compute the mean depth for each sample using the fitted forest.
+        Predict the mean leaf depth for each sample.
         """
         predictions = np.array([f(explanatory) for f in self.numpy_preds])
         return predictions.mean(axis=0)
 
     def fit(self, explanatory, n_trees=100, verbose=0):
         """
-        Fit the isolation forest on an unlabeled dataset.
+        Fit the forest on an unlabeled dataset.
         """
         self.explanatory = explanatory
         self.numpy_preds = []
@@ -36,34 +40,24 @@ class Isolation_Random_Forest:
         nodes = []
         leaves = []
 
-        i = 0
-        built = 0
-        while built < n_trees:
-            try:
-                T = Isolation_Random_Tree(max_depth=self.max_depth,
-                                          seed=self.seed + i)
-                T.fit(explanatory)
-            except Exception:
-                i += 1
-                continue
-
+        for i in range(n_trees):
+            T = Isolation_Random_Tree(max_depth=self.max_depth,
+                                      seed=self.seed + i)
+            T.fit(explanatory)
             self.numpy_preds.append(T.predict)
             depths.append(T.depth())
             nodes.append(T.count_nodes())
             leaves.append(T.count_nodes(only_leaves=True))
 
-            built += 1
-            i += 1
-
         if verbose == 1:
             print(f"""  Training finished.
-        - Mean depth                     : {np.array(depths).mean()}
-        - Mean number of nodes           : {np.array(nodes).mean()}
-        - Mean number of leaves          : {np.array(leaves).mean()}""")
+    - Mean depth                     : {np.array(depths).mean()}
+    - Mean number of nodes           : {np.array(nodes).mean()}
+    - Mean number of leaves          : {np.array(leaves).mean()}""")
 
     def suspects(self, explanatory, n_suspects):
         """
-        Return the most likely outliers according to the isolation forest.
+        Return the n_suspects samples with the smallest mean depth.
         """
         depths = self.predict(explanatory)
         idx = np.argsort(depths)[:n_suspects]
