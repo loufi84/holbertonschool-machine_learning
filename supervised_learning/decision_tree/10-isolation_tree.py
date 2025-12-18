@@ -369,29 +369,19 @@ class Isolation_Random_Tree():
         """
         Random splitting rule, safe against empty / constant sub-populations.
         """
-        idx = np.where(node.sub_population)[0]
-        m = idx.size
-
-        if m <= 1:
+        diff = 0
+        while diff == 0:
             feature = self.rng.integers(0, self.explanatory.shape[1])
-            threshold = self.explanatory[idx[0], feature] if m == 1 else 0.0
-            return feature, threshold
+            vals = self.explanatory[:, feature][node.sub_population]
 
-        Xn = self.explanatory[idx]
-        mins = Xn.min(axis=0)
-        maxs = Xn.max(axis=0)
-        diffs = maxs - mins
+            if vals.size == 0:
+                return 0, 0.0
 
-        valid = np.where(diffs > 0)[0]
+        feature_min, feature_max = self.np_extrema(vals)
+        diff = feature_max - feature_min
 
-        if valid.size == 0:
-            feature = self.rng.integers(0, Xn.shape[1])
-            threshold = mins[feature]
-            return feature, threshold
-
-        feature = valid[self.rng.integers(0, valid.size)]
         x = self.rng.uniform()
-        threshold = (1 - x) * mins[feature] + x * maxs[feature]
+        threshold = (1 - x) * feature_min + x * feature_max
         return feature, threshold
 
     def get_leaf_child(self, node, sub_population):
