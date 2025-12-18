@@ -4,6 +4,8 @@ This module contains 3 classes linked to decision trees.
 This task aim at find the depth of a decision tree.
 """
 import numpy as np
+Node = __import__('8-build_decision_tree').Node
+Leaf = __import__('8-build_decision_tree').Leaf
 
 
 class Node:
