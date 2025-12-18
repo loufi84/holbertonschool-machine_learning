@@ -523,5 +523,8 @@ class Random_Forest():
                                                       self.target)}""")
 
     def accuracy(self, test_explanatory, test_target):
+        """
+        Check the accuracy.
+        """
         return np.sum(np.equal(self.predict(test_explanatory),
                                test_target))/test_target.size
