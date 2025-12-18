@@ -36,20 +36,30 @@ class Isolation_Random_Forest:
         nodes = []
         leaves = []
 
-        for i in range(n_trees):
-            T = Isolation_Random_Tree(max_depth=self.max_depth,
-                                      seed=self.seed + i)
-            T.fit(explanatory)
+        i = 0
+        built = 0
+        while built < n_trees:
+            try:
+                T = Isolation_Random_Tree(max_depth=self.max_depth,
+                                          seed=self.seed + i)
+                T.fit(explanatory)
+            except Exception:
+                i += 1
+                continue
+
             self.numpy_preds.append(T.predict)
             depths.append(T.depth())
             nodes.append(T.count_nodes())
             leaves.append(T.count_nodes(only_leaves=True))
 
+            built += 1
+            i += 1
+
         if verbose == 1:
             print(f"""  Training finished.
-    - Mean depth                     : {np.array(depths).mean()}
-    - Mean number of nodes           : {np.array(nodes).mean()}
-    - Mean number of leaves          : {np.array(leaves).mean()}""")
+        - Mean depth                     : {np.array(depths).mean()}
+        - Mean number of nodes           : {np.array(nodes).mean()}
+        - Mean number of leaves          : {np.array(leaves).mean()}""")
 
     def suspects(self, explanatory, n_suspects):
         """
