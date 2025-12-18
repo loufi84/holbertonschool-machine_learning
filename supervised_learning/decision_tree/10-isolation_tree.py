@@ -8,230 +8,6 @@ Node = __import__('8-build_decision_tree').Node
 Leaf = __import__('8-build_decision_tree').Leaf
 
 
-class Node:
-    """
-    This class represent the node of a decision tree.
-    """
-    def __init__(self, feature=None, threshold=None,
-                 left_child=None, right_child=None, is_root=False, depth=0):
-        self.feature = feature
-        self.threshold = threshold
-        self.left_child = left_child
-        self.right_child = right_child
-        self.is_leaf = False
-        self.is_root = is_root
-        self.sub_population = None
-        self.depth = depth
-
-    def max_depth_below(self):
-        """
-        This function calculate the maximal depth of the tree by recursion.
-        """
-        if self.left_child is None and self.right_child is None:
-            return self.depth
-
-        if self.left_child is not None:
-            left_max = self.left_child.max_depth_below()
-        else:
-            left_max = self.depth
-
-        if self.right_child is not None:
-            right_max = self.right_child.max_depth_below()
-        else:
-            right_max = self.depth
-
-        return max(left_max, right_max)
-
-    def count_nodes_below(self, only_leaves=False):
-        """
-        This method count the number of nodes.
-        """
-        left_count = self.left_child.count_nodes_below(only_leaves=only_leaves)
-        right_count = self.right_child.count_nodes_below(
-            only_leaves=only_leaves)
-
-        if only_leaves:
-            return left_count + right_count
-        else:
-            return 1 + left_count + right_count
-
-    def left_child_add_prefix(self, text):
-        """
-        Function to add prefix to left child.
-        """
-        lines = text.split("\n")
-        new_lines = ["    +--" + lines[0]]
-        for x in lines[1:]:
-            new_lines.append("    |  " + x)
-        return "\n".join(new_lines)
-
-    def right_child_add_prefix(self, text):
-        """
-        Function to add prefix to right child.
-        """
-        lines = text.split("\n")
-        new_lines = ["    +--" + lines[0]]
-        for x in lines[1:]:
-            new_lines.append("       " + x)
-        return "\n".join(new_lines)
-
-    def __str__(self):
-        """
-        This method represent the object node.
-        """
-        if self.is_root:
-            text = f"root [feature={self.feature}, threshold={self.threshold}]"
-        else:
-            text = (
-                f"-> node [feature={self.feature}, "
-                f"threshold={self.threshold}]"
-            )
-
-        parts = [text]
-
-        if self.left_child is not None:
-            parts.append(self.left_child_add_prefix(str(self.left_child)))
-
-        if self.right_child is not None:
-            parts.append(self.right_child_add_prefix(str(self.right_child)))
-
-        return "\n".join(parts)
-
-    def get_leaves_below(self):
-        """
-        This function gets the leaves below the current node.
-        """
-        leaves = []
-
-        if self.left_child is not None:
-            leaves.extend(self.left_child.get_leaves_below())
-
-        if self.right_child is not None:
-            leaves.extend(self.right_child.get_leaves_below())
-
-        return leaves
-
-    def update_bounds_below(self):
-        """
-        This function update the bounds of the tree.
-        """
-        if self.is_root:
-            self.upper = {0: np.inf}
-            self.lower = {0: -1*np.inf}
-
-        for child in [self.left_child, self.right_child]:
-            if child is None:
-                continue
-
-            child.lower = self.lower.copy()
-            child.upper = self.upper.copy()
-
-            f = self.feature
-            t = self.threshold
-
-            if child is self.left_child:
-                child.lower[f] = max(child.lower.get(f, -np.inf), t)
-            else:
-                child.upper[f] = min(child.upper.get(f, np.inf), t)
-
-        for child in [self.left_child, self.right_child]:
-            if child is not None:
-                child.update_bounds_below()
-
-    def update_indicator(self):
-        """
-        This function take a numpy array and return a boolean size
-        array.
-        """
-        def is_large_enough(x):
-            """
-            Check if all features are strictly upper than lower bounds.
-            """
-            if not hasattr(self, "lower") or len(self.lower) == 0:
-                return np.ones(x.shape[0], dtype=bool)
-
-            checks = np.array([
-                np.greater(x[:, key], self.lower[key])
-                for key in self.lower.keys()
-            ])
-
-            return np.all(checks, axis=0)
-
-        def is_small_enough(x):
-            """
-            Check if all features are lower than upper bounds.
-            """
-            if not hasattr(self, "upper") or len(self.upper) == 0:
-                return np.ones(x.shape[0], dtype=bool)
-
-            checks = np.array([
-                np.less_equal(x[:, key], self.upper[key])
-                for key in self.upper.keys()
-            ])
-
-            return np.all(checks, axis=0)
-
-        self.indicator = lambda x: np.all(np.array([is_large_enough(x),
-                                                    is_small_enough(x)]),
-                                          axis=0)
-
-    def pred(self, x):
-        """
-        This function allow testing the predictions.
-        """
-        if x[self.feature] > self.threshold:
-            return self.left_child.pred(x)
-        else:
-            return self.right_child.pred(x)
-
-
-class Leaf(Node):
-    """
-    This class represent the leaf of a decision tree.
-    """
-    def __init__(self, value, depth=None):
-        super().__init__()
-        self.value = value
-        self.is_leaf = True
-        self.depth = depth
-
-    def max_depth_below(self):
-        """
-        Return the length of the leaf.
-        """
-        return self.depth
-
-    def count_nodes_below(self, only_leaves=False):
-        """
-        This function count the number of nodes below the leaf.
-        """
-        return 1
-
-    def __str__(self):
-        """
-        The method to represent the leaf object.
-        """
-        return (f"-> leaf [value={self.value}]")
-
-    def get_leaves_below(self):
-        """
-        This function check if there is a leaf below.
-        """
-        return [self]
-
-    def update_bounds_below(self):
-        """
-        This function does nothing as it is in a leaf.
-        """
-        pass
-
-    def pred(self, x):
-        """
-        This function allow testing the predictions.
-        """
-        return self.value
-
-
 class Decision_Tree():
     """
     This class represent the decision tree himself.
@@ -587,16 +363,32 @@ class Isolation_Random_Tree():
         return np.min(arr), np.max(arr)
 
     def random_split_criterion(self, node):
-        """Randomly choose a splitting rule (same as Decision_Tree)."""
-        diff = 0
-        while diff == 0:
+        """
+        Random splitting rule, safe against empty / constant sub-populations.
+        """
+        idx = np.where(node.sub_population)[0]
+        m = idx.size
+
+        if m <= 1:
             feature = self.rng.integers(0, self.explanatory.shape[1])
-            feature_min, feature_max = self.np_extrema(
-                self.explanatory[:, feature][node.sub_population]
-            )
-            diff = feature_max - feature_min
+            threshold = self.explanatory[idx[0], feature] if m == 1 else 0.0
+            return feature, threshold
+
+        Xn = self.explanatory[idx]
+        mins = Xn.min(axis=0)
+        maxs = Xn.max(axis=0)
+        diffs = maxs - mins
+
+        valid = np.where(diffs > 0)[0]
+
+        if valid.size == 0:
+            feature = self.rng.integers(0, Xn.shape[1])
+            threshold = mins[feature]
+            return feature, threshold
+
+        feature = valid[self.rng.integers(0, valid.size)]
         x = self.rng.uniform()
-        threshold = (1 - x) * feature_min + x * feature_max
+        threshold = (1 - x) * mins[feature] + x * maxs[feature]
         return feature, threshold
 
     def get_leaf_child(self, node, sub_population):
