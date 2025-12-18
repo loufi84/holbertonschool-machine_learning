@@ -421,7 +421,7 @@ class Isolation_Random_Tree():
         )
 
         is_left_leaf = (
-            (np.sum(left_population) < self.min_pop) or
+            (np.sum(left_population) <= self.min_pop) or
             (node.depth + 1 == self.max_depth)
         )
 
@@ -432,7 +432,7 @@ class Isolation_Random_Tree():
             self.fit_node(node.left_child)
 
         is_right_leaf = (
-            (np.sum(right_population) < self.min_pop) or
+            (np.sum(right_population) <= self.min_pop) or
             (node.depth + 1 == self.max_depth)
         )
 
