@@ -360,6 +360,9 @@ class Isolation_Random_Tree():
         )
 
     def np_extrema(self, arr):
+        """
+        Extrema computes with numpy.
+        """
         return np.min(arr), np.max(arr)
 
     def random_split_criterion(self, node):
@@ -411,6 +414,9 @@ class Isolation_Random_Tree():
         return n
 
     def fit_node(self, node):
+        """
+        Function to fit nodes.
+        """
         node.feature, node.threshold = self.random_split_criterion(node)
 
         left_population = node.sub_population & (
@@ -443,6 +449,9 @@ class Isolation_Random_Tree():
             self.fit_node(node.right_child)
 
     def fit(self, explanatory, verbose=0):
+        """
+        Still a fitting function.
+        """
         self.split_criterion = self.random_split_criterion
         self.explanatory = explanatory
 
