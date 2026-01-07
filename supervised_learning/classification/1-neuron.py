@@ -13,21 +13,26 @@ class Neuron:
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
         if nx < 1:
-            raise ValueError("nx must be a positive integer")
-
-        self.W = np.random.randn(1, nx)
-        self.b = 0
-        self.A = 0
+            raise ValueError("nx must be positive")
 
         self.__W = np.random.randn(1, nx)
         self.__b = 0
         self.__A = 0
 
     def get_W(self):
+        """
+        Getter for __W
+        """
         return self.__W
 
     def get_b(self):
+        """
+        Getter for __b
+        """
         return self.__b
 
     def get_A(self):
+        """
+        Getter for __A
+        """
         return self.__A
