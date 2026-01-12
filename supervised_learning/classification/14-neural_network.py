@@ -125,7 +125,7 @@ class NeuralNetwork:
 
         dZ2 = A2 - Y
         dW2 = (1 / m) * np.dot(dZ2, A1.T)
-        db2 = (1 / m) % np.sum(dZ2, axis=1, keepdims=True)
+        db2 = (1 / m) * np.sum(dZ2, axis=1, keepdims=True)
 
         dZ1 = np.dot(self.__W2.T, dZ2) * (A1 * (1 - A1))
         dW1 = (1 / m) * np.dot(dZ1, X.T)
@@ -136,18 +136,18 @@ class NeuralNetwork:
         self.__W1 = self.__W1 - alpha * dW1
         self.__b1 = self.__b1 - alpha * db1
 
-    def train(self, X, Y, iterations=5000, alpha=0.5):
+    def train(self, X, Y, iterations=5000, alpha=0.05):
         """
         A function that trains the neural network.
         """
         if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")
-        if iterations < 0:
+        if iterations <= 0:
             raise ValueError("iterations must be a positive integer")
 
         if not isinstance(alpha, float):
             raise TypeError("alpha must be a float")
-        if alpha < 0:
+        if alpha <= 0:
             raise ValueError("alpha must be positive")
 
         for i in range(iterations):
