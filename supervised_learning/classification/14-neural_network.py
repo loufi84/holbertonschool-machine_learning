@@ -136,7 +136,8 @@ class NeuralNetwork:
         self.__W1 = self.__W1 - alpha * dW1
         self.__b1 = self.__b1 - alpha * db1
 
-    def train(self, X, Y, iterations=5000, alpha=0.05):
+    def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True,
+              graph=True, step=100):
         """
         A function that trains the neural network.
         """
@@ -150,8 +151,36 @@ class NeuralNetwork:
         if alpha <= 0:
             raise ValueError("alpha must be positive")
 
-        for i in range(iterations):
+        if verbose or graph:
+            if not isinstance(step, int):
+                raise TypeError("step must be an integer")
+            if step <= 0 or step > iterations:
+                raise ValueError("step must be positive and <= iterations")
+
+        costs = []
+        iters = []
+
+        for i in range(iterations + 1):
             A1, A2 = self.forward_prop(X)
-            self.gradient_descent(X, Y, A1, A2, alpha)
+            cost = self.cost(Y, A2)
+
+            if verbose or graph:
+                if i == 0 or i == iterations or i % step == 0:
+                    if verbose:
+                        print(f"Cost after {i} iterations: {cost}")
+                    if graph:
+                        iters.append(i)
+                        costs.append(cost)
+
+            if i < iterations:
+                self.gradient_descent(X, Y, A1, A2, alpha)
+
+        if graph:
+            import matplotlib.pyplot as plt
+            plt.plot(iters, costs)
+            plt.xlabel("iteration")
+            plt.ylabel("cost")
+            plt.title("Training Cost")
+            plt.show()
 
         return self.evaluate(X, Y)
