@@ -113,5 +113,5 @@ class NeuralNetwork:
         _, A = self.forward_prop(X)
         cost = self.cost(Y, A)
 
-        prediction = np.where(A >= 0.5).astype(int)
+        prediction = np.where(A >= 0.5, 1, 0)
         return prediction, cost
