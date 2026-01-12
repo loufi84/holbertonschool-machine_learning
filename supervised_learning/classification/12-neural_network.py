@@ -110,8 +110,8 @@ class NeuralNetwork:
         Return:
         The cost and the predictions.
         """
-        A = self.forward_prop(X)
+        _, A = self.forward_prop(X)
         cost = self.cost(Y, A)
 
-        prediction = np.where(A >= 0.5, 1, 0)
+        prediction = np.where(A >= 0.5).astype(int)
         return prediction, cost
