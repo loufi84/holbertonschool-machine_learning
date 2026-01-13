@@ -87,7 +87,7 @@ class DeepNeuralNetwork:
         regression.
         """
         m = Y.shape[1]
-        cost = -(1 / m) * np.sum(Y * np.log(A + 1e-8))
+        cost = -(1 / m) * np.sum(Y * np.log(A + 1.0000001))
         return cost
 
     def evaluate(self, X, Y):
