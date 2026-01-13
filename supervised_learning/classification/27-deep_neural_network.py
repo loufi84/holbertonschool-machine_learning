@@ -101,7 +101,7 @@ class DeepNeuralNetwork:
         preds = np.zeros((classes, m))
 
         pred_labels = np.argmax(A, axis=0)
-        preds[pred_labels, np.arrange(m)] = 1
+        preds[pred_labels, np.arange(m)] = 1
 
         return preds, cost
 
