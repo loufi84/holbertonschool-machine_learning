@@ -33,23 +33,23 @@ class DeepNeuralNetwork:
             self.__weights[f"b{i}"] = np.zeros((layer_size, 1))
             prev_size = layer_size
 
-        @property
-        def L(self):
-            """
-            Getter for the number of layers.
-            """
-            return self.__L
+    @property
+    def L(self):
+        """
+        Getter for the number of layers.
+        """
+        return self.__L
 
-        @property
-        def cache(self):
-            """
-            Getter for the cache dictionary.
-            """
-            return self.__cache
+    @property
+    def cache(self):
+        """
+        Getter for the cache dictionary.
+        """
+        return self.__cache
 
-        @property
-        def weights(self):
-            """
-            Getter for the weights dictionary.
-            """
-            return self.__weights
+    @property
+    def weights(self):
+        """
+        Getter for the weights dictionary.
+        """
+        return self.__weights
