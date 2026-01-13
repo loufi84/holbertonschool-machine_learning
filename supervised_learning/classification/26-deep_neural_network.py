@@ -173,8 +173,8 @@ class DeepNeuralNetwork:
         """
         Saves the instance object to a file in pickle.
         """
-        if not filename.endswith(".plk"):
-            filename += ".plk"
+        if not filename.endswith(".pkl"):
+            filename += ".pkl"
 
         with open(filename, "wb") as f:
             pickle.dump(self, f)
@@ -184,8 +184,8 @@ class DeepNeuralNetwork:
         """
         Loads a pickled object and return the loaded object.
         """
-        if not filename.endswith(".plk"):
-            filename += ".plk"
+        if not filename.endswith(".pkl"):
+            filename += ".pkl"
 
         try:
             with open(filename, "rb") as f:
