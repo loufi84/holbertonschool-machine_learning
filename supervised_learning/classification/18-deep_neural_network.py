@@ -69,6 +69,6 @@ class DeepNeuralNetwork:
             Z = np.dot(W, A_prev) + b
             A = 1 / (1 + np.exp(-Z))
 
-            self.__cache[f"A{1}"] = A
+            self.__cache[f"A{i}"] = A
 
         return self.__cache[f"A{self.__L}"], self.__cache
