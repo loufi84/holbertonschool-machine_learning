@@ -23,12 +23,12 @@ class DeepNeuralNetwork:
         self.weights = {}
 
         prev_size = nx
-        for l, layer_size in enumerate(layers, start=1):
+        for i, layer_size in enumerate(layers, start=1):
             if not isinstance(layer_size, int) or layer_size <= 0:
                 raise TypeError("layers must be a list of positive integers")
 
-            self.weights[f"W{l}"] = (
+            self.weights[f"W{i}"] = (
                 np.random.randn(layer_size, prev_size) * np.sqrt(2 / prev_size)
             )
-            self.weights[f"b{l}"] = np.zeros((layer_size, 1))
+            self.weights[f"b{i}"] = np.zeros((layer_size, 1))
             prev_size = layer_size
