@@ -41,21 +41,37 @@ class DeepNeuralNetwork:
 
     @property
     def L(self):
+        """
+        Getter for the number of layers.
+        """
         return self.__L
 
     @property
     def cache(self):
+        """
+        Getter for the cache dictionary.
+        """
         return self.__cache
 
     @property
     def weights(self):
+        """
+        Getter for the weights dictionary.
+        """
         return self.__weights
 
     @property
     def activation(self):
+        """
+        Getter for activation.
+        """
         return self.__activation
 
     def forward_prop(self, X):
+        """
+        A function that calculates the forward propagation of the
+        neural network.
+        """
         self.__cache["A0"] = X
 
         for i in range(1, self.__L + 1):
@@ -80,11 +96,18 @@ class DeepNeuralNetwork:
         return self.__cache[f"A{self.__L}"], self.__cache
 
     def cost(self, Y, A):
+        """
+        A function that calculates the cost of the model using logic
+        regression.
+        """
         m = Y.shape[1]
         cost = -(1 / m) * np.sum(Y * np.log(A))
         return cost
 
     def evaluate(self, X, Y):
+        """
+        The function that evaluates the neural network predictions.
+        """
         A, _ = self.forward_prop(X)
         cost = self.cost(Y, A)
 
@@ -96,6 +119,10 @@ class DeepNeuralNetwork:
         return preds, cost
 
     def gradient_descent(self, Y, cache, alpha=0.05):
+        """
+        This method calculates one pass of gradient descent of
+        the neural network.
+        """
         m = Y.shape[1]
         weights_copy = self.__weights.copy()
 
@@ -123,6 +150,9 @@ class DeepNeuralNetwork:
 
     def train(self, X, Y, iterations=5000, alpha=0.05,
               verbose=True, graph=True, step=100):
+        """
+        Trains the deep neural network.
+        """
         if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")
         if iterations <= 0:
@@ -166,6 +196,9 @@ class DeepNeuralNetwork:
         return self.evaluate(X, Y)
 
     def save(self, filename):
+        """
+        Saves the instance object to a file in pickle.
+        """
         if not filename.endswith(".pkl"):
             filename += ".pkl"
         with open(filename, "wb") as f:
@@ -173,6 +206,9 @@ class DeepNeuralNetwork:
 
     @staticmethod
     def load(filename):
+        """
+        Loads a pickled object and return the loaded object.
+        """
         if not filename.endswith(".pkl"):
             filename += ".pkl"
         try:
