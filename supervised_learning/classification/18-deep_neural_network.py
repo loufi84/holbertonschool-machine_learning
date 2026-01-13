@@ -62,8 +62,8 @@ class DeepNeuralNetwork:
         self.__cache["A0"] = X
 
         for i in range(1, self.__L + 1):
-            W = self.__weights[f"W{1}"]
-            b = self.__weights[f"b{1}"]
+            W = self.__weights[f"W{i}"]
+            b = self.__weights[f"b{i}"]
             A_prev = self.__cache[f"A{i - 1}"]
 
             Z = np.dot(W, A_prev) + b
