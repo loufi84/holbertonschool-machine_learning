@@ -9,4 +9,4 @@ def one_hot(labels, classes=None):
     """
     The function to one_hot.
     """
-    return K.utils.to_categorical(labels, num-classes=classes)
+    return K.utils.to_categorical(labels, num_classes=classes)
