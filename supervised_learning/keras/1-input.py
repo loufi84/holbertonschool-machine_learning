@@ -12,7 +12,7 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
     """
     if len(layers) != len(activations):
         raise ValueError("layers and activations must have the same length")
-    
+
     l2 = K.regularizers.l2(lambtha)
     drop_rate = 1.0 - keep_prob
 
