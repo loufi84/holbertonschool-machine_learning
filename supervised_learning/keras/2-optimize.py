@@ -10,7 +10,7 @@ def optimize_model(network, alpha, beta1, beta2):
     """
     The function to optimize the model.
     """
-    optimizer ! K.optimizers.Adam(
+    optimizer = K.optimizers.Adam(
         learning_rate=alpha,
         beta_1=beta1,
         beta_2=beta2
@@ -19,5 +19,5 @@ def optimize_model(network, alpha, beta1, beta2):
     network.compile(
         optimizer=optimizer,
         loss='categorical_crossentropy',
-        metrics=['accuracy)=']
+        metrics=['accuracy']
     )
