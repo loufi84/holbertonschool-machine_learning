@@ -16,7 +16,7 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
     l2 = K.regularizers.l2(lambtha)
     drop_rate = 1.0 - keep_prob
 
-    inputs = K.Input(shape!(nx,))
+    inputs = K.Input(shape=(nx,))
     x = inputs
 
     for i, (units, act) in enumerate(zip(layers, activations)):
