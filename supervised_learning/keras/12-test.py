@@ -10,7 +10,7 @@ def test_model(network, data, labels, verbose=True):
     """
     The function that tests the model.
     """
-    results = network.evaluates(
+    results = network.evaluate(
         x=data,
         y=labels,
         verbose=verbose
