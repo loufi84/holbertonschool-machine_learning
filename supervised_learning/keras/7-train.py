@@ -32,11 +32,10 @@ def train_model(network, data, labels, batch_size, epochs,
             Inverse time decay.
             """
             lr = alpha / (1 + decay_rate * epoch)
-            print(f"Learning rate updated to {lr}")
             return lr
 
         callbacks.append(K.callbacks.LearningRateScheduler(schedule,
-                         verbose=0))
+                         verbose=1))
 
     history = network.fit(
         x=data,
