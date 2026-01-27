@@ -17,7 +17,7 @@ def create_confusion_matrix(labels, logits):
     y_pred = np.argmax(logits, axis=1)
 
     # Création de la matrice de confusion
-    conf = np.zeros((classes, classes), dtype=int)
+    conf = np.zeros((classes, classes), dtype=float)
 
     # Incrémentation des bonnes cases
     np.add.at(conf, (y_true, y_pred), 1)
