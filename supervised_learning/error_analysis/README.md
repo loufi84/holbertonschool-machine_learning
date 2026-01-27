@@ -1,0 +1,1 @@
+This folder contains the exercizes about error analysis in Machine Learning.
